@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mldn.travel.dao.ITravelEmpDAO">
+	<select id="getEidByTid" parameterType="long" resultType="long">
+		select count(*) from TravelEmp where tid=#{tid} ;
+	</select>
+	<insert id="doCreateTravelEmp" parameterType="TravelEmp">
+		insert into travel_emp(tid,eid) values (#{tid},#{eid}) ;
+	</insert>
+</mapper>

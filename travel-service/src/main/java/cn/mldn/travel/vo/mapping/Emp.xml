@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mldn.travel.dao.IEmpDAO">
+	<select id="findById" parameterType="string" resultType="Emp">
+		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked
+		FROM emp WHERE eid=#{eid}	
+	</select>
+	
+	<select id="findAll" resultType="Emp">
+		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked
+		FROM emp
+	</select>
+	
+	<select id="findAllBySplitLocked" parameterType="map" resultType="Emp">
+		select eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked from emp 
+		<where>
+			<if test="did!=null">
+				did=#{did} and 
+			</if>
+			<choose>
+				<when test="column!=null and keyWord!=null">
+					${column} like #{keyWord} and locked=0 limit #{start},#{lineSize} 
+				</when>
+				<otherwise>
+					locked=0 limit #{start},#{lineSize} 
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	<select id="getAllCountByLocked" parameterType="map" resultType="long">
+		select count(*) from emp
+		<where>
+			<if test="did!=null">
+				did=#{did} and 
+			</if>
+			<choose>
+				<when test="column!=null and keyWord!=null">
+					${column} like #{keyWord} and locked=0
+				</when>
+				<otherwise>
+					locked=0
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	
+	<insert id="doCreate" parameterType="Emp">
+		insert into emp(eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked) 
+			values(#{eid},#{lid},#{did},#{ename},#{sal},#{phone},#{password},#{photo},#{note},#{hiredate},#{ineid},#{locked})
+	</insert>
+	
+	<select id="findByDid" parameterType="long" resultType="Emp">
+		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked
+		FROM emp where lid='manager' and did=#{did} 
+	</select>
+	<select id="findByLidAndDid" parameterType="map" resultType="Emp">
+		SELECT eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked
+		FROM emp where lid=#{lid} and did=#{did}
+	</select>
+	<update id="doUpdate" parameterType="Emp">
+		update emp set lid=#{lid},did=#{did},ename=#{ename},sal=#{sal},photo=#{photo},phone=#{phone},note=#{note},ineid=#{ineid}
+		<if test="password!=null">
+			,password=#{password} 
+		</if> 
+		<where>
+			eid=#{eid}
+		</where>
+	</update>
+	
+	<update id="doUpdateLidById" parameterType="long">
+		update emp set lid='staff' where did=#{did} and lid='manager';
+	</update>
+	
+	<select id="findByLid" parameterType="string" resultType="string">
+		select ename from emp where lid=#{lid} ;
+	</select>
+	<update id="doUpdateLevel" parameterType="Emp">
+		update emp set lid=#{lid},ineid=#{ineid} where eid=#{eid} ;
+	</update>
+	
+	<select id="findAllByIds" parameterType="string" resultType="Emp">
+		select eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked from emp 
+		<where>
+			eid IN
+			<foreach collection="array" open="(" close=")" separator="," item="myeid">
+				#{myeid}
+			</foreach>
+		</where>
+		and locked!=2
+	</select>
+	<update id="doUpdateLocked" parameterType="Emp">
+		update emp set locked=#{locked},ineid=#{ineid} where eid=#{eid}
+	</update>
+	
+	<select id="findByTravel" parameterType="long" resultType="Emp">
+		select eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked from emp 
+ 			where eid in (select seid from travel where tid=#{tid}) ;
+	</select>
+	
+	<select id="findAllByTravelEmp" parameterType="long" resultType="Emp">
+		select eid,lid,did,ename,sal,phone,password,photo,note,hiredate,ineid,locked from emp 
+ 			where eid in (select eid from travel_emp where tid=#{tid}) ;
+	</select>
+</mapper>

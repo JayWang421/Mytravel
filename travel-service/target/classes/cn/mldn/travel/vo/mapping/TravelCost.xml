@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mldn.travel.dao.ITravelCostDAO">
+	<insert id="doCreate" parameterType="TravelCost" useGeneratedKeys="true" keyProperty="tcid">
+		insert into travel_cost(tpid,tid,price,title) 
+			values(#{tpid},#{tid},#{price},#{title})
+	</insert>
+	<select id="findAllByTid" parameterType="long" resultType="TravelCost">
+		select tcid,tpid,tid,price,title from travel_cost where tid=#{tid} ;
+	</select>
+	<delete id="doRemove" parameterType="long">
+		delete from travel_cost where tcid=#{tcid} ;
+	</delete>
+</mapper>
