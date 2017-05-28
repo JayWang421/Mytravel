@@ -6,7 +6,7 @@
 		insert into travel(seid,iid,title,sdate,edate,dest,audit,note) 
 			values(#{seid},#{iid},#{title},#{sdate},#{edate},#{dest},#{audit},#{note});
 	</insert>
-	<select id="findById" resultType="Travel">
+	<select id="findById" parameterType="long" resultType="Travel">
 		SELECT tid,seid,iid,title,sdate,edate,dest,audit,note,ecount,total,subdate,auddate,anote,aeid FROM travel 
 		WHERE tid=#{tid}
 	</select>
@@ -37,4 +37,20 @@
 	<delete id="doRemoveSelf" parameterType="Travel">
 		delete from travel where tid=#{tid} and seid=#{seid} and (audit=9 or audit=2)
 	</delete>
+	
+	<update id="doUpdateSubmit" parameterType="Travel">
+		update travel 
+		<set>
+			<if test="subdate!=null and audit!=null">
+				subdate=#{subdate},audit=#{audit},
+			</if>
+			<if test="ecount!=null">
+				ecount=#{ecount},
+			</if>
+			<if test="total!=null">
+				total=#{total} 
+			</if>
+		</set>
+			where tid=#{tid} and audit=9 ;
+	</update>
 </mapper>

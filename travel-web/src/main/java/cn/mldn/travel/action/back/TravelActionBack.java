@@ -76,6 +76,7 @@ public class TravelActionBack extends AbstractBaseAction {
 		return mav;
 	}
 	
+	
 	@RequestMapping("list_self")
 	@RequiresUser
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
@@ -94,6 +95,7 @@ public class TravelActionBack extends AbstractBaseAction {
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
 	@RequiresPermissions(value = { "travel:edit" }, logical = Logical.OR)
 	public ModelAndView editUser(long tid) {
+		System.out.println(this.travelServiceBack.editEcount(tid)) ;
 		ModelAndView mav = new ModelAndView(super.getUrl("travel.user.page"));
 		Map<String,Object> map=this.travelServiceBack.listEmp(tid) ;
 		List<Dept> allDepts=(List<Dept>) map.get("allDepts") ;
@@ -148,6 +150,7 @@ public class TravelActionBack extends AbstractBaseAction {
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
 	@RequiresPermissions(value = { "travel:edit" }, logical = Logical.OR)
 	public ModelAndView addCostPre(long tid) {
+		System.out.println(this.travelServiceBack.editTotal(tid)) ;
 		ModelAndView mav = new ModelAndView(super.getUrl("travel.cost.page"));
 		Map<String ,Object> map=this.travelServiceBack.listType(tid) ;
 		mav.addAllObjects(map) ;
@@ -239,10 +242,13 @@ public class TravelActionBack extends AbstractBaseAction {
 	@RequiresUser
 	@RequiresRoles(value = { "travel" }, logical = Logical.OR)
 	@RequiresPermissions(value = { "travel:submit" }, logical = Logical.OR)
-	public ModelAndView submit(HttpServletRequest request) {
+	public ModelAndView submit(HttpServletRequest request,long tid) {
 		ModelAndView mav = new ModelAndView(super.getUrl("back.forward.page"));
-		// super.setUrlAndMsg(request, "travel.self.action", "travel.submit.failure");
-		super.setUrlAndMsg(request, "travel.self.action", "travel.submit.success");
+		if(this.travelServiceBack.editUpdate(tid)){
+			super.setUrlAndMsg(request, "travel.self.action", "travel.submit.success");
+		}else{
+			super.setUrlAndMsg(request, "travel.self.action", "travel.submit.failure");
+		}
 		return mav;
 	}
 }

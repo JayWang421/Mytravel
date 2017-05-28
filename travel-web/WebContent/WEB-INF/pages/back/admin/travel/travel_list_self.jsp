@@ -44,22 +44,28 @@
 						<c:forEach items="${allTravels}" var="travel">
 							<tr id="travel-1">
 								<c:if test="${travel.audit==1}">
-									<td class="text-center"><span class="text-warning"><span class="glyphicon glyphicon-flag"></span>&nbsp;已完成</span></td>
+									<td class="text-center"><span class="text-success"><span class="glyphicon glyphicon-flag"></span>&nbsp;审核通过</span></td>
 								</c:if>
 								<c:if test="${travel.audit==9}">
 									<td class="text-center"><span class="text-danger"><span class="glyphicon glyphicon-flag"></span>&nbsp;待提交</span></td>
 								</c:if>
 								<c:if test="${travel.audit==0}">
-									<td class="text-center"><span class="text-danger"><span class="glyphicon glyphicon-flag"></span>&nbsp;待审核</span></td>
+									<td class="text-center"><span class="text-primary"><span class="glyphicon glyphicon-flag"></span>&nbsp;审核中</span></td>
+								</c:if>
+								<c:if test="${travel.audit==2}">
+									<td class="text-center"><span class="text-warning"><span class="glyphicon glyphicon-flag"></span>&nbsp;审核未通过</span></td>
+								</c:if>
+								<c:if test="${travel.audit==3}">
+									<td class="text-center"><span class="text-muted"><span class="glyphicon glyphicon-flag"></span>&nbsp;出差完成</span></td>
 								</c:if>
 								<td class="text-center">
 									<span id="showBtn-1" onmouseover="this.style.cursor='hand'">${travel.title}</span>
 								</td>
-								<td class="text-center"><fmt:formatDate value="${travel.sdate}" type="date"/></td>
-								<td class="text-center">人</td>
-								<td class="text-center">￥</td>
+								<td class="text-center"><fmt:formatDate value="${travel.subdate}" type="date"/></td>
+								<td class="text-center">${travel.ecount}人</td>
+								<td class="text-center">￥${travel.total}</td>
 								<td class="text-center">
-									<a type="button" class="btn btn-primary btn-xs" href="<%=TRAVEL_SUBMIT_URL%>">
+									<a type="button" class="btn btn-primary btn-xs" href="<%=TRAVEL_SUBMIT_URL%>?tid=${travel.tid}">
 										<span class="glyphicon glyphicon-cloud-upload"></span>&nbsp;提交申请</a>
 									<a type="button" class="btn btn-warning btn-xs" href="<%=TRAVEL_USER_URL%>?tid=${travel.tid}">
 										<span class="glyphicon glyphicon-user"></span>&nbsp;出差人员</a>

@@ -12,4 +12,8 @@
 	<delete id="doRemove" parameterType="long">
 		delete from travel_cost where tcid=#{tcid} ;
 	</delete>
+	
+	<select id="getTotal" parameterType="long" resultType="double">
+		select price from travel_cost where tid=#{tid} ;
+	</select>
 </mapper>

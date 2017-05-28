@@ -7,4 +7,6 @@ import cn.mldn.util.dao.IBaseDAO;
 
 public interface ITravelCostDAO extends IBaseDAO<Long, TravelCost> {
 	public List<TravelCost> findAllByTid(Long tid) ;
+	
+	public List<Double> getTotal(Long tid) ;
 }

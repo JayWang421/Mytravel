@@ -1,6 +1,9 @@
 package cn.mldn.travel.service.back.impl;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -188,5 +191,51 @@ public class TravelServiceImpl implements ITravelServiceBack {
 		map.put("allDepts", this.deptDAO.findAll()) ;
 		map.put("allLevels", this.levelDAO.findAll()) ;
 		return map;
+	}
+	
+//	@Override
+//	public Map<String, Object> getEcountAndTotal(long tid) {
+//		Map<String ,Object> map=new HashMap<>() ;
+//		map.put("ecount", this.travelEmpDAO.getEcount(tid)) ;
+//		List<Double> all=this.travelCostDAO.getTotal(tid) ;
+//		Iterator<Double> iter=all.iterator() ;
+//		double total=0.0 ;
+//		while(iter.hasNext()){
+//			total+=iter.next() ;
+//		}
+//		map.put("total", total) ;
+//		return map;
+//	}
+	
+	@Override
+	public boolean editTotal(long tid) {
+		Travel vo=new Travel() ;
+		vo.setAudit(9);
+		vo.setTid(tid);
+		List<Double> all=this.travelCostDAO.getTotal(tid) ;
+		Iterator<Double> iter=all.iterator() ;
+		double total=0.0 ;
+		while(iter.hasNext()){
+			total+=iter.next() ;
+		}
+		vo.setTotal(total);
+		return this.travelDAO.doUpdateSubmit(vo);
+	}
+
+	@Override
+	public boolean editEcount(long tid) {
+		Travel vo=new Travel() ;
+		vo.setAudit(9);
+		vo.setTid(tid);
+		vo.setEcount(this.travelEmpDAO.getEcount(tid));
+		return this.travelDAO.doUpdateSubmit(vo);
+	}
+	
+	@Override
+	public boolean editUpdate(long tid) {
+		Travel vo=this.travelDAO.findById(tid) ;
+		vo.setAudit(0);
+		vo.setSubdate(new Date());
+		return this.travelDAO.doUpdateSubmit(vo);
 	}
 }

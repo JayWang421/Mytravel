@@ -11,4 +11,6 @@ public interface ITravelDAO extends IBaseDAO<Long, Travel> {
 	public Long getCountSplit(Map<String ,Object> map) ;
 	
 	public boolean doRemoveSelf(Travel vo) ;
+	
+	public boolean doUpdateSubmit(Travel vo) ;
 }

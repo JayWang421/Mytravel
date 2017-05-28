@@ -57,4 +57,12 @@ public interface ITravelServiceBack {
 	@RequiresRoles(value = {"travel"}, logical = Logical.OR) 
 	@RequiresPermissions(value = {"travel:edit"}, logical = Logical.OR) 
 	public Map<String ,Object> listEmp(long tid) ;
+	
+//	@RequiresRoles(value = {"travel"}, logical = Logical.OR) 
+//	@RequiresPermissions(value = {"travel:edit"}, logical = Logical.OR) 
+//	public Map<String ,Object> getEcountAndTotal(long tid) ;
+	
+	public boolean editTotal(long tid); 
+	public boolean editEcount(long tid); 
+	public boolean editUpdate(long tid); 
 }

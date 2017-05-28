@@ -7,6 +7,15 @@ function clearCostModal() {
 	}) ;
 	myform.resetForm() ; 
 }
+
+function calcTotal(){
+	price=0.0 ;
+	$("span[id^=price-]").each(function(){
+		price+=parseFloat($(this).text()) ;
+	}) ;
+	$("#allPrice").text(price) ;
+	console.log(price) ;
+}
 function deleteEmp(){
 	$("button[id^=remove-]").on("click",function(){
 		tcid=this.id.split("-")[1];
@@ -15,12 +24,13 @@ function deleteEmp(){
 			operateAlert(data.trim()=="true","支出项删除成功！" , "支出项删除失败！") ;
 			if(data.trim()=="true"){
 				$("#travel-"+tcid).remove() ;
-				//calcTotal() ;
+				calcTotal() ;
 			}
 		},"text") ;
 	}) ;
 }
 $(function(){
+	calcTotal() ;
 	deleteEmp() ;
 	
 	$(addBtn).on("click",function(){
@@ -53,6 +63,7 @@ $(function(){
 								"</tr>";
 					$("#costTable").append(costInfo) ;
 					deleteEmp() ;
+					calcTotal() ;
 				}
 				$("#costInfo").modal("toggle") ;	// 显示模态窗口
 				operateAlert(data.status,"支出项追加成功！" , "支出项追加失败！") ;
